@@ -28,17 +28,21 @@ PYBIND11_MODULE(pyNeuroGMLMcuda, m) {
     
     #ifdef USE_GPU
         //m.def("gpuEnabled", []() { return true; });
-        m.attr("GPU_ENABLED") = py::bool_([](){ return true; });
+        //m.attr("GPU_ENABLED") = py::bool_([](){ return true; });
+        m.attr("GPU_ENABLED") = py::bool_(true);
     #else
         //m.def("gpuEnabled", []() { return false; });
-        m.attr("GPU_ENABLED") = py::bool_([](){ return false; });
+        //m.attr("GPU_ENABLED") = py::bool_([](){ return false; });
+        m.attr("GPU_ENABLED") = py::bool_(false);
     #endif
     #ifdef USE_SINGLE_PRECISION
         //m.def("doublePrecision", []() { return true; });
-        m.attr("DOUBLE_PRECISION") = py::bool_([](){ return false; });
+        //m.attr("DOUBLE_PRECISION") = py::bool_([](){ return false; });
+        m.attr("DOUBLE_PRECISION") = py::bool_( false);
     #else
         //m.def("doublePrecision", []() { return false; });
-        m.attr("DOUBLE_PRECISION") = py::bool_([](){ return true; });
+        //m.attr("DOUBLE_PRECISION") = py::bool_([](){ return true; });
+        m.attr("DOUBLE_PRECISION") = py::bool_(true);
     #endif
 
     py::module_ m2 = m.def_submodule("kcGLM", "A submodule containing the GLM GPU code.");

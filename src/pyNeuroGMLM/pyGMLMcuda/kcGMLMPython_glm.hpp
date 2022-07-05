@@ -157,7 +157,7 @@ class kcGLM_trial : public GPUGLM_trial_args<FPTYPE> {
         void print() {
             std::ostringstream output_stream;
             output_stream << "X ";
-            for(int ii = 0; ii < this->X->getSize(0) && ii < 5; ii++) {
+            for(unsigned int ii = 0; ii < this->X->getSize(0) && ii < 5; ii++) {
                 if(ii > 0) {
                     output_stream << ", ";
                 }
@@ -192,7 +192,7 @@ class kcGLM_trialBlock : public GPUGLM_GPU_block_args<FPTYPE> {
         int addTrial(std::shared_ptr<kcGLM_trial<FPTYPE>> trial) {
             trials_shared.push_back(trial);
             this->trials.push_back(trial.get()); // gross, but my simple API needed the raw pointers and I don't want to change that 
-            return this->trials.size()-1; // trial number within block
+            return static_cast<int>(this->trials.size()-1); // trial number within block
         }
 
         ~kcGLM_trialBlock() {

@@ -45,7 +45,7 @@ class GPUGMLM_trialGroup_python : public GPUGMLM_trial_Group_args<FPTYPE> {
 
             iX_numpy.push_back(py::array_t<int, py::array::f_style>({}));
             this->iX.push_back(new GLData_numpy<int>(iX_numpy[iX_numpy.size() - 1]));
-            return X_numpy.size() - 1;
+            return static_cast<int>(X_numpy.size() - 1);
         }
         int addSharedIdxFactor(py::array_t<int, py::array::f_style | py::array::forcecast> iX_) {
             iX_numpy.push_back(iX_);
@@ -53,7 +53,7 @@ class GPUGMLM_trialGroup_python : public GPUGMLM_trial_Group_args<FPTYPE> {
 
             X_numpy.push_back(py::array_t<FPTYPE, py::array::f_style>({}));
             this->X.push_back(new GLData_numpy<FPTYPE>(X_numpy[X_numpy.size() - 1]));
-            return X_numpy.size() - 1;
+            return static_cast<int>(X_numpy.size() - 1);
         }
         py::array_t<int, py::array::f_style | py::array::forcecast> getSharedIdxFactor(unsigned int idx) {
             if(idx < iX_numpy.size()) {
@@ -128,7 +128,7 @@ class GPUGMLM_trial_python : public GPUGMLM_trial_args<FPTYPE> {
                 Groups_shared.push_back(group);
                 this->Groups.push_back(group.get());
             }
-            return this->Groups.size() - 1;
+            return static_cast<int>(this->Groups.size() - 1);
         }
         std::shared_ptr<GPUGMLM_trialGroup_python<FPTYPE>> getGroup(unsigned int grpIdx) {
             if(grpIdx < getNumGroups()) {
@@ -172,7 +172,7 @@ class GPUGMLM_trialBlock_python : public GPUGMLM_GPU_block_args<FPTYPE> {
             if(vd == 1) {
                 trials_shared.push_back(trial);
                 this->trials.push_back(trial.get());
-                return trials_shared.size() - 1;
+                return static_cast<int>(trials_shared.size() - 1);
             }
             else {
                 std::ostringstream output_stream;
@@ -333,7 +333,7 @@ class GPUGMLM_structure_python : public GPUGMLM_structure_args<FPTYPE> {
         int addGroup(std::shared_ptr<GPUGMLM_group_structure_python<FPTYPE>> group) {
             groups_shared.push_back(group);
             this->Groups.push_back(group.get());
-            return this->Groups.size()-1;
+            return static_cast<int>(this->Groups.size()-1);
         }
 
         std::shared_ptr<GPUGMLM_group_structure_python<FPTYPE>> getGroup(unsigned int jj) {
@@ -371,7 +371,7 @@ class GPUGMLM_group_params_python : public GPUGMLM_group_params<FPTYPE> {
             V_numpy = py::array_t<FPTYPE, py::array::f_style>({dim_P, structure->dim_R_max});
             this->V = new GLData_numpy<FPTYPE>(V_numpy);
 
-            for(int tt = 0; tt < structure->dim_S(); tt++) {
+            for(unsigned int tt = 0; tt < structure->dim_S(); tt++) {
                 T_numpy.push_back(py::array_t<FPTYPE, py::array::f_style>({structure->dim_T[tt], structure->dim_R_max}));
                 this->T.push_back(new GLData_numpy<FPTYPE>(T_numpy[tt]));
             }
@@ -405,7 +405,7 @@ class GPUGMLM_group_params_python : public GPUGMLM_group_params<FPTYPE> {
             if(V_new.ndim() != 2 || V_new.shape(0) != this->dim_P()) {
                 throw py::value_error("Size of V does not match number of neurons.");
             }
-            if(V_new.shape(1) > dim_R_max) {
+            if(static_cast<size_t>(V_new.shape(1)) > dim_R_max) {
                 throw py::value_error("Rank of V is greater than space allocated.");
             }
             V_numpy = V_new;
@@ -420,7 +420,7 @@ class GPUGMLM_group_params_python : public GPUGMLM_group_params<FPTYPE> {
             if(T_new.ndim() != 2 || T_new.shape(0) != this->dim_T(mode, msg)) {
                 throw py::value_error("Size of T does not match mode dimension.");
             }
-            if(T_new.shape(1) > dim_R_max) {
+            if(static_cast<size_t>(T_new.shape(1)) > dim_R_max) {
                 throw py::value_error("Rank of V is greater than space allocated.");
             }
             T_numpy[mode] = T_new;
@@ -431,7 +431,7 @@ class GPUGMLM_group_params_python : public GPUGMLM_group_params<FPTYPE> {
             if(T_new.size() != this->T.size()) {
                 throw py::value_error("Number of parameters doesn't match number of tensor modes.");
             }
-            for(int tt = 0; tt < T_new.size(); tt++) {
+            for(unsigned int tt = 0; tt < T_new.size(); tt++) {
                 setT(tt, T_new[tt]);
             }
             setV(V_new);
@@ -447,7 +447,7 @@ class GPUGMLM_group_params_python : public GPUGMLM_group_params<FPTYPE> {
             delete this->V;
             this->V = new GLData_numpy<FPTYPE>(V_numpy);
 
-            for(int tt = 0; tt < this->dim_S(); tt++) {
+            for(unsigned int tt = 0; tt < this->dim_S(); tt++) {
                 T_numpy[tt] = py::array_t<FPTYPE, py::array::f_style>({this->dim_T(tt, msg), dim_R_new});
                 delete this->T[tt];
                 this->T[tt] = new GLData_numpy<FPTYPE>(T_numpy[tt]);
@@ -480,7 +480,7 @@ class GPUGMLM_group_params_python : public GPUGMLM_group_params<FPTYPE> {
             if(modelStructure->dim_S() != this->dim_S()) {
                 return false;
             }
-            for(int ss = 0; ss < this->dim_S(); ss++) {
+            for(unsigned int ss = 0; ss < this->dim_S(); ss++) {
                 if(modelStructure->dim_T[ss] != this->dim_T(ss, msg)) {
                     return false;
                 }
@@ -505,7 +505,7 @@ class GPUGMLM_params_python : public GPUGMLM_params<FPTYPE> {
             this->B = new GLData_numpy<FPTYPE>(B_numpy);
 
             groups_shared.resize(modelStructure->Groups.size());
-            for(int jj = 0; jj < modelStructure->Groups.size(); jj++) {
+            for(unsigned int jj = 0; jj < modelStructure->Groups.size(); jj++) {
                 groups_shared[jj] = std::make_shared<GPUGMLM_group_params_python<FPTYPE>>(modelStructure->getGroup(jj), modelStructure->dim_P);
                 this->Groups.push_back(groups_shared[jj].get());
             }
@@ -567,7 +567,7 @@ class GPUGMLM_params_python : public GPUGMLM_params<FPTYPE> {
                 return false;
             }
 
-            for(int jj = 0; jj < this->dim_J(); jj++) {
+            for(unsigned int jj = 0; jj < this->dim_J(); jj++) {
                 if(!(this->groups_shared[jj]->verifyParams(modelStructure->getGroup(jj), this->dim_P()))) {
                     return false;
                 }
@@ -592,13 +592,13 @@ class GPUGMLM_group_computeOptions_python : public GPUGMLM_group_computeOptions 
         GPUGMLM_group_computeOptions_python(std::shared_ptr<GPUGMLM_group_structure_python<FPTYPE>> structure, bool gradOn = true) {
             this->compute_dV = gradOn;
             this->compute_dT.resize(structure->dim_S());
-            for(int tt = 0; tt < structure->dim_S(); tt++) {
+            for(unsigned int tt = 0; tt < structure->dim_S(); tt++) {
                 this->compute_dT[tt] = gradOn;
             }
         }
         void setGrad(bool gradOn) {
             this->compute_dV = gradOn;
-            for(int tt = 0; tt < this->compute_dT.size(); tt++) {
+            for(unsigned int tt = 0; tt < this->compute_dT.size(); tt++) {
                 this->compute_dT[tt] = gradOn;
             }
         }
@@ -623,7 +623,7 @@ class GPUGMLM_computeOptions_python : public GPUGMLM_computeOptions<FPTYPE> {
             this->trial_weights = new GLData_numpy<FPTYPE>(trial_weights_numpy);
 
             groups_shared.resize(modelStructure->Groups.size());
-            for(int jj = 0; jj < modelStructure->Groups.size(); jj++) {
+            for(unsigned int jj = 0; jj < modelStructure->Groups.size(); jj++) {
                 groups_shared[jj] = std::make_shared<GPUGMLM_group_computeOptions_python<FPTYPE>>(modelStructure->getGroup(jj), gradOn);
                 this->Groups.push_back(groups_shared[jj].get());
             }
@@ -636,7 +636,7 @@ class GPUGMLM_computeOptions_python : public GPUGMLM_computeOptions<FPTYPE> {
             this->compute_dW = gradOn;
             this->compute_dB = gradOn;
             this->compute_trialLL = true;
-            for(int jj = 0; jj < groups_shared.size(); jj++) {
+            for(unsigned int jj = 0; jj < groups_shared.size(); jj++) {
                 groups_shared[jj]->setGrad(gradOn);
             }
         }
@@ -681,7 +681,7 @@ class GPUGMLM_computeOptions_python : public GPUGMLM_computeOptions<FPTYPE> {
                 return false;
             }
 
-            for(int jj = 0; jj < this->dim_J(); jj++) {
+            for(unsigned int jj = 0; jj < this->dim_J(); jj++) {
                 if(!(this->groups_shared[jj]->verifyParams(modelStructure->getGroup(jj)))) {
                     return false;
                 }
@@ -710,7 +710,7 @@ class GPUGMLM_group_results_python : public GPUGMLM_group_results<FPTYPE> {
             dV_numpy = py::array_t<FPTYPE, py::array::f_style>({dim_P, structure->dim_R_max});
             this->dV = new GLData_numpy<FPTYPE>(dV_numpy);
 
-            for(int tt = 0; tt < structure->dim_S(); tt++) {
+            for(unsigned int tt = 0; tt < structure->dim_S(); tt++) {
                 dT_numpy.push_back(py::array_t<FPTYPE, py::array::f_style>({structure->dim_T[tt], structure->dim_R_max}));
                 this->dT.push_back(new GLData_numpy<FPTYPE>(dT_numpy[tt]));
             }
@@ -742,7 +742,7 @@ class GPUGMLM_group_results_python : public GPUGMLM_group_results<FPTYPE> {
                 delete this->dV;
                 this->dV = new GLData_numpy<FPTYPE>(dV_numpy);
 
-                for(int tt = 0; tt < this->dim_S(); tt++) {
+                for(unsigned int tt = 0; tt < this->dim_S(); tt++) {
                     dT_numpy[tt] = py::array_t<FPTYPE, py::array::f_style>({this->dim_T(tt, msg), dim_R_new});
                     delete this->dT[tt];
                     this->dT[tt] = new GLData_numpy<FPTYPE>(dT_numpy[tt]);
@@ -764,7 +764,7 @@ class GPUGMLM_group_results_python : public GPUGMLM_group_results<FPTYPE> {
         }
         void reset() {
             this->dV->assign(0);
-            for(int ss = 0; ss < this->dT.size(); ss++) {
+            for(unsigned int ss = 0; ss < this->dT.size(); ss++) {
                 this->dT[ss]->assign(0);
             }
         }
@@ -794,7 +794,7 @@ class GPUGMLM_results_python : public GPUGMLM_results<FPTYPE> {
             this->trialLL = new GLData_numpy<FPTYPE>(trialLL_numpy);
 
             groups_shared.resize(modelStructure->Groups.size());
-            for(int jj = 0; jj < modelStructure->Groups.size(); jj++) {
+            for(unsigned int jj = 0; jj < modelStructure->Groups.size(); jj++) {
                 groups_shared[jj] = std::make_shared<GPUGMLM_group_results_python<FPTYPE>>(modelStructure->getGroup(jj), modelStructure->dim_P);
                 this->Groups.push_back(groups_shared[jj].get());
             }
@@ -806,7 +806,7 @@ class GPUGMLM_results_python : public GPUGMLM_results<FPTYPE> {
         }
         void matchRank(std::shared_ptr<GPUGMLM_params_python<FPTYPE>> params) {
             if(params->getNumGroups() == getNumGroups()) {
-                for(int jj = 0; jj < getNumGroups(); jj++){
+                for(unsigned int jj = 0; jj < getNumGroups(); jj++){
                     groups_shared[jj]->setRank(params->getGroupParams(jj)->getRank());
                 }
             }
@@ -833,13 +833,13 @@ class GPUGMLM_results_python : public GPUGMLM_results<FPTYPE> {
             return dB_numpy;
         }
         unsigned int getNumGroups() {
-            return groups_shared.size();
+            return static_cast<unsigned int>(groups_shared.size());
         }
         void reset() {
             this->dW->assign(0);
             this->dB->assign(0);
             this->trialLL->assign(0);
-            for(int jj = 0; jj < groups_shared.size(); jj++) {
+            for(unsigned int jj = 0; jj < groups_shared.size(); jj++) {
                 groups_shared[jj]->reset();
             }
         }
@@ -888,7 +888,7 @@ class kcGMLM_python {
             }
         }
         int getNumBlocks() {
-            return blocks_shared.size();
+            return static_cast<int>(blocks_shared.size());
         }
 
         int addBlock(std::shared_ptr<GPUGMLM_trialBlock_python<FPTYPE>> block) {
@@ -903,15 +903,15 @@ class kcGMLM_python {
             
             // create results
             unsigned int maxTrialIdx = 0;
-            for(int bb = 0; bb < blocks_shared.size(); bb++) {
-                for(int mm = 0; mm < blocks_shared[bb]->getNumTrials(); mm++) {
-                    int trIdx   = blocks_shared[bb]->getTrial(mm)->getTrialNum();
+            for(unsigned int bb = 0; bb < blocks_shared.size(); bb++) {
+                for(unsigned int mm = 0; mm < blocks_shared[bb]->getNumTrials(); mm++) {
+                    unsigned int trIdx   = blocks_shared[bb]->getTrial(mm)->getTrialNum();
                     maxTrialIdx = trIdx > maxTrialIdx ? trIdx : maxTrialIdx;
                 }
             }
             results = std::make_shared<GPUGMLM_results_python<FPTYPE>>(structure, maxTrialIdx + 1);
             
-            return blocks.size()-1;
+            return static_cast<int>(blocks.size()-1);
         }
         void toGPU() {
             #ifdef USE_GPU

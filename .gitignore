@@ -24,6 +24,7 @@ TempData/
 _skbuild/
 obj/
 build/
+.vscode/
 
 # Node artifact files
 node_modules/

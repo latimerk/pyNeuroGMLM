@@ -62,7 +62,7 @@ int kcGLM_python<FPTYPE>::addBlock(std::shared_ptr<kcGLM_trialBlock<FPTYPE>> blo
     freeGPU();
     blocks_shared.push_back(block);
     blocks.push_back(block.get()); // gross to store both the shared & raw pointer, but my simple API needed the raw pointers and I don't want to change that 
-    return blocks.size()-1;
+    return static_cast<int>(blocks.size()-1);
 }
 
 template <class FPTYPE>
@@ -81,7 +81,7 @@ void kcGLM_python<FPTYPE>::toGPU() {
         kcglm = new GPUGLM<FPTYPE>(structure, blocks, msg);
 
         //setup result
-        results->setupResults(kcglm->dim_M());
+        results->setupResults(static_cast<unsigned int>(kcglm->dim_M()));
     #else
         throw std::runtime_error("GPU access not available: compiled with CPU only.");
     #endif

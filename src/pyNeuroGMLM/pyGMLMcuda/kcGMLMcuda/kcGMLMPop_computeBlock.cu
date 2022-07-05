@@ -155,7 +155,7 @@ void GPUGMLMPop_computeBlock<FPTYPE>::computeRateParts(const GPUGMLM_computeOpti
 
     //for each group
     for(int jj = 0; jj < dataset->dim_J(); jj++ ) {
-        dataset->Groups[jj]->getGroupRate(isSparseRun,  params->Groups[jj], opts->Groups[jj], stream_Groups[jj], cublasHandle_Groups[jj]);
+        //dataset->Groups[jj]->getGroupRate(isSparseRun,  params->Groups[jj], opts->Groups[jj], stream_Groups[jj], cublasHandle_Groups[jj]);
     }
 }
 
@@ -1370,7 +1370,7 @@ void GPUGMLMPop_dataset_Group_GPU<FPTYPE>::getGroupRate(const bool isSparseRun, 
                 break;
             }
         }
-
+        
         switch( params->dim_S()) {
                 case 1:
                     kernel_getGroupRate_pop<FPTYPE,1><<<grid_size, block_size, 0, stream>>>( lambda_v->device(),  GPUData<FPTYPE>::assembleKernels(lambda_d), 
@@ -1436,9 +1436,9 @@ void GPUGMLMPop_dataset_Group_GPU<FPTYPE>::getGroupRate(const bool isSparseRun, 
                                                                                         parent->ridx_a_all_c->device(), dim_A);
                     break;
                 default:
-                    this->checkCudaErrors(cudaErrorInvalidConfiguration, "GPUGMLMPop_dataset_Group_GPU::getGroupRate errors:  kernel_getGroupRate launch failed - invalid tensor order");
+                this->checkCudaErrors(cudaErrorInvalidConfiguration, "GPUGMLMPop_dataset_Group_GPU::getGroupRate_pop errors:  kernel_getGroupRate_pop launch failed - invalid tensor order");
         }
-        this->checkCudaErrors("GPUGMLMPop_dataset_Group_GPU::getGroupRate errors:  kernel_getGroupRate launch failed");
+        this->checkCudaErrors("GPUGMLMPop_dataset_Group_GPU::getGroupRate_pop errors:  kernel_getGroupRate_pop launch failed");
 
         // multiply lambda_v * V' -> lambda(:, :, groupNum)
         FPTYPE alpha = 1;

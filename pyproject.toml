@@ -1,0 +1,33 @@
+[project]
+name = "pyNeuroGMLM"
+version = "0.1"
+description = "Generalized multilinear models for low-dimensional neural population data analysis."
+authors = [
+    {"name" = "Kenneth Latimer", "email" = "latimerkw@gmail.com"}
+]
+license = {"file" = "LICENSE"}
+readme = "README.md"
+requires-python = ">3.9"
+
+
+# Requirements
+dependencies = [
+    "numpy",
+    "scipy"
+]
+
+[build-system]
+requires = [
+    "setuptools",
+    "scikit-build>=0.13",
+    "cmake",
+    "ninja",
+    "numpy"
+]
+build-backend = "setuptools.build_meta"
+
+
+[project.urls]
+homepage = "https://github.com/pyNeuroGMLM/"
+repository = "https://github.com/pyNeuroGMLM/"
+documentation = "https://github.com/pyNeuroGMLM/"

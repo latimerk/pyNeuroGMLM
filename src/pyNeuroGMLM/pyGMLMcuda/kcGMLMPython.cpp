@@ -22,7 +22,7 @@
   typedef double FPTYPE;
 #endif
 
-PYBIND11_MODULE(pyGMLMcuda, m) {
+PYBIND11_MODULE(pyNeuroGMLMcuda, m) {
     m.doc() = "API for working with CUDA code for fast GPU computation with GMLMs (made with pybind11)";
 
     

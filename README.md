@@ -21,10 +21,10 @@ To compile the library and run the example:
 ```console
 user@DESKTOP:~/PROJECTHOME$ mkdir build
 user@DESKTOP:~/PROJECTHOME/build$ cd build
-user@DESKTOP:~/PROJECTHOME/build$ cmake ..
+user@DESKTOP:~/PROJECTHOME/build$ cmake ../src/pyNeuroGMLM/
 user@DESKTOP:~/PROJECTHOME/build$ make
-user@DESKTOP:~/PROJECTHOME/Python$ cd ../Python
-user@DESKTOP:~/PROJECTHOME/Python$ python gmlmExample.py
+user@DESKTOP:~/PROJECTHOME/examples$ cd ../examples
+user@DESKTOP:~/PROJECTHOME/examples$ python gmlmExample.py
 ```
 
 The CPU-only version still requires compiling the C++ library to make sure that the same code handles organizing the GMLM and trial structures - Sorry, this is an annoying and less flexible design choice on my part to not make everything in Python.

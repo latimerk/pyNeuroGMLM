@@ -5,7 +5,7 @@ import numpy as np
 import scipy.sparse as sps
 from scipy.linalg import khatri_rao
 from scipy.special import gammaln
-from pyGMLM import pyGMLMcuda
+from pyNeuroGMLM import pyNeuroGMLMcuda
 
 '''
 Log likelihood functions
@@ -127,7 +127,7 @@ class GMLMHelper:
     This is for the GMLM likelihood only: no hyperparameters are used or considered by the functions in this class.
     """
 
-    def __init__(self, gmlm : pyGMLMcuda.kcGMLM):
+    def __init__(self, gmlm : pyNeuroGMLMcuda.kcGMLM):
         """
         Args:
           gmlm: The constructed built kcGMLM object.
@@ -143,17 +143,17 @@ class GMLMHelper:
         return self._gmlm_structure.get_num_neurons()
 
     @property
-    def GMLM_structure(self) -> pyGMLMcuda.ModelStructure:
+    def GMLM_structure(self) -> pyNeuroGMLMcuda.ModelStructure:
         """The  GMLM structure."""
         return self._gmlm_structure;
 
     @property
-    def params(self) -> pyGMLMcuda.Parameters:
+    def params(self) -> pyNeuroGMLMcuda.Parameters:
         """The current parameter object."""
         return self._params;
         
     @property
-    def results(self) -> pyGMLMcuda.Results:
+    def results(self) -> pyNeuroGMLMcuda.Results:
         """The current results object."""
         return self._results;
 
@@ -357,7 +357,7 @@ class GMLMHelper:
                 T = np.random.randn(grp.get_dim_T(ss), grp.get_rank()) * std;
                 grp.set_T(ss, T);
 
-    def _get_F(self, factor : int, factor_idxs : list[int], dim_F : int, params_group : pyGMLMcuda.ParametersGroup) -> np.ndarray:
+    def _get_F(self, factor : int, factor_idxs : list[int], dim_F : int, params_group : pyNeuroGMLMcuda.ParametersGroup) -> np.ndarray:
         """
         Computes the full coefficient for a factor using the Khatri-Rao product
         
@@ -383,7 +383,7 @@ class GMLMHelper:
 
 
 class GMLMHelperCPU(GMLMHelper):
-    def __init__(self, gmlm  : pyGMLMcuda.kcGMLM):
+    def __init__(self, gmlm  : pyNeuroGMLMcuda.kcGMLM):
         """
         Puts all the trials together into one compact structure for computing the log likelihood
         and derivative using numpy computations.
@@ -458,13 +458,13 @@ class GMLMHelperCPU(GMLMHelper):
             self.Y[self.trial_ranges[tt]:self.trial_ranges[tt+1],:] = Y_c;
         
             # precomputes the normalizing constant for the trial
-            if(log_like_type == pyGMLMcuda.logLikeType.ll_poiss_exp):
+            if(log_like_type == pyNeuroGMLMcuda.logLikeType.ll_poiss_exp):
                 nc = LL_poiss_exp_nc(Y_c);
-            elif(log_like_type == pyGMLMcuda.logLikeType.ll_truncpoiss_exp):
+            elif(log_like_type == pyNeuroGMLMcuda.logLikeType.ll_truncpoiss_exp):
                 nc = LL_truncpoiss_exp_nc(Y_c);
-            elif(log_like_type == pyGMLMcuda.logLikeType.ll_poiss_softplus):
+            elif(log_like_type == pyNeuroGMLMcuda.logLikeType.ll_poiss_softplus):
                 nc = LL_poiss_softplus_nc(Y_c);
-            elif(log_like_type == pyGMLMcuda.logLikeType.ll_squared_error):
+            elif(log_like_type == pyNeuroGMLMcuda.logLikeType.ll_squared_error):
                 nc = LL_squared_error_nc(Y_c);
             else:
                 raise ValueError("Invalid log likelihood type.");
@@ -818,13 +818,13 @@ class GMLMHelperCPU(GMLMHelper):
         log_like_type = self._gmlm_structure.get_log_like_type();
         dt = self._gmlm_structure.get_bin_size_sec();
 
-        if(log_like_type == pyGMLMcuda.logLikeType.ll_poiss_exp):
+        if(log_like_type == pyNeuroGMLMcuda.logLikeType.ll_poiss_exp):
             log_like = LL_poiss_exp(log_rate, Y, dt);
-        elif(log_like_type == pyGMLMcuda.logLikeType.ll_truncpoiss_exp):
+        elif(log_like_type == pyNeuroGMLMcuda.logLikeType.ll_truncpoiss_exp):
             log_like = LL_truncpoiss_exp(log_rate, Y, dt);
-        elif(log_like_type == pyGMLMcuda.logLikeType.ll_poiss_softplus):
+        elif(log_like_type == pyNeuroGMLMcuda.logLikeType.ll_poiss_softplus):
             log_like = LL_poiss_softplus(log_rate, Y, dt);
-        elif(log_like_type == pyGMLMcuda.logLikeType.ll_squared_error):
+        elif(log_like_type == pyNeuroGMLMcuda.logLikeType.ll_squared_error):
             log_like = LL_squared_error(log_rate, Y, dt);
         else:
             raise ValueError("Invalid log likelihood type.");
@@ -848,13 +848,13 @@ class GMLMHelperCPU(GMLMHelper):
         log_like_type = self._gmlm_structure.get_log_like_type();
         dt = self._gmlm_structure.get_bin_size_sec();
 
-        if(log_like_type == pyGMLMcuda.logLikeType.ll_poiss_exp):
+        if(log_like_type == pyNeuroGMLMcuda.logLikeType.ll_poiss_exp):
             log_like = DLL_poiss_exp(log_rate, Y, dt);
-        elif(log_like_type == pyGMLMcuda.logLikeType.ll_truncpoiss_exp):
+        elif(log_like_type == pyNeuroGMLMcuda.logLikeType.ll_truncpoiss_exp):
             log_like = DLL_truncpoiss_exp(log_rate, Y, dt);
-        elif(log_like_type == pyGMLMcuda.logLikeType.ll_poiss_softplus):
+        elif(log_like_type == pyNeuroGMLMcuda.logLikeType.ll_poiss_softplus):
             log_like = DLL_poiss_softplus(log_rate, Y, dt);
-        elif(log_like_type == pyGMLMcuda.logLikeType.ll_squared_error):
+        elif(log_like_type == pyNeuroGMLMcuda.logLikeType.ll_squared_error):
             log_like = DLL_squared_error(log_rate, Y, dt);
         else:
             raise ValueError("Invalid log likelihood type.");

@@ -1,7 +1,29 @@
-# These are some examples of commonly ignored file patterns.
-# You should customize this list as applicable to your project.
-# Learn more about .gitignore:
-#     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
+*.o
+*.a
+*.mexa64
+*.mexw64
+*.m~
+*.cu~
+*.cpp~
+*.hpp~
+*.h~
+*.c~
+*.aux
+*.pdf
+*.log
+*.gz
+*.lib
+*.asv
+*.manifest
+*.exp
+*.obj
+*.so
+TempData/
+*/__pycache__
+*.egg-info
+_skbuild/
+obj/
+build/
 
 # Node artifact files
 node_modules/

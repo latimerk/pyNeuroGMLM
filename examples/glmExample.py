@@ -2,8 +2,8 @@
 # I've written down some code to show how to setup and run the GLM, but for typical applications,
 # standard GLM libraries would be a better choice.
 import numpy as np;
-import pyNeuroGMLM.pyGMLMcuda.kcGLM as glm;
-from pyNeuroGMLM.pyGMLMcuda import ll_poiss_exp;
+import pyNeuroGMLM.pyNeuroGMLMcuda.kcGLM as glm;
+from pyNeuroGMLM.pyNeuroGMLMcuda import ll_poiss_exp;
 import scipy.special as sp; 
 
 X = np.asfortranarray(np.random.randn(100,5));

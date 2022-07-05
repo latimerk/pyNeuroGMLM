@@ -28,10 +28,5 @@ if(WITH_GPU)
   # could be called by other libraries and executables
   set_target_properties( kcGMLM PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
   
-  # install(TARGETS kcGMLM kcGMLMPop kcGLM DESTINATION ${kcGMLMProject_SOURCE_DIR}/obj/)
-  #set_property(TARGET kcGMLM PROPERTY ARCHIVE_OUTPUT_DIRECTORY ${kcGMLMProject_SOURCE_DIR}/obj/)
-  #set_property(TARGET kcGMLM PROPERTY ARCHIVE_OUTPUT_DIRECTORY DESTINATION)
-  #install(TARGETS kcGMLM DESTINATION .)
   set_property(TARGET kcGMLM PROPERTY ARCHIVE_OUTPUT_DIRECTORY ${kcGMLMProject_SOURCE_DIR}/obj/)
-  #install(TARGETS kcGMLM DESTINATION ${kcGMLMProject_SOURCE_DIR}/obj/)
 endif()

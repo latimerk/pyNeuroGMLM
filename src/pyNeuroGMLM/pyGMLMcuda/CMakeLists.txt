@@ -8,7 +8,7 @@ find_package(CUDAToolkit REQUIRED)
 
 if(WITH_GPU)
     pybind11_add_module(pyNeuroGMLMcuda MODULE  kcGMLMPython.cpp kcGMLMPython_glm.cpp)
-    target_link_libraries(pyNeuroGMLMcuda PRIVATE  kcGMLM  CUDA::cuda_driver CUDA::cudadevrt CUDA::cudart  CUDA::cusparse CUDA::cublas)
+    target_link_libraries(pyNeuroGMLMcuda PRIVATE  kcGMLM  CUDA::cuda_driver  CUDA::cudart  CUDA::cusparse CUDA::cublas)
 else()
     pybind11_add_module(pyNeuroGMLMcuda MODULE  kcGMLMPython.cpp kcGMLMPython_glm.cpp)
 endif()

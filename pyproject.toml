@@ -28,6 +28,6 @@ build-backend = "setuptools.build_meta"
 
 
 [project.urls]
-homepage = "https://github.com/pyNeuroGMLM/"
-repository = "https://github.com/pyNeuroGMLM/"
-documentation = "https://github.com/pyNeuroGMLM/"
+homepage = "https://github.com/latimerk/pyNeuroGMLM/"
+repository = "https://github.com/latimerk/pyNeuroGMLM/"
+documentation = "https://github.com/latimerk/pyNeuroGMLM/"

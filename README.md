@@ -23,15 +23,20 @@ The install uses **[pybind11](https://github.com/pybind/pybind11)** to compile t
 
 The CPU-only version still requires compiling the C++ library to make sure that the same code handles organizing the GMLM and trial structures - Sorry, this is an annoying and less flexible design choice on my part to not make everything in Python.
 If no CUDA install is detected, the GPU code is disabled by default.
-Additionally, the library can be compiled without using Cuda by passing in an option to the install command: 
+Additionally, the library can be compiled without using Cuda by setting an environment variable before the install command: 
 
 ```console
-pip install -v git+https://github.com/latimerkw/pyNeuroGMLM/ --install-option "--" --install-option "-DWITH_GPU=Off"
+export GMLM_WITH_GPU=OFF
+pip install -v git+https://github.com/latimerkw/pyNeuroGMLM/ 
 ```
 
-The library can be compiled to use single-precision data (double is default) using the <code>--install-option -DWITH_DOUBLE_PRECISION=Off</code> option as (or in additon to) the GPU option above.
+For some reason, passing in an option directly into pip caused trouble, and replacing it with an environment variable was a quick and dirty fix.
+WINDOWS USERS: use <code>set GMLM_WITH_GPU=OFF</code> instead of <code>export</code>.
+
+The library can be compiled to use single-precision data (double is default) using the <code>GMLM_WITH_DOUBLE_PRECISION=Off</code> option as (or in additon to) the GPU option above.
 Given pybind11's limitations with templating, it was way easier to just require recompiling that supporting both simultaneously.
 If there's any real demand to include both, I could add better support for both precisions.
+
 
 ## Citation (preprint)
 ```

@@ -45,4 +45,4 @@ Latimer, K. W., & Freedman, D. J. (2021). Low-dimensional encoding of decisions 
 https://www.biorxiv.org/content/10.1101/2021.10.07.463576v1
 
 
-**[MATLAB version for the DMC task](https://github.com/latimerkw/GMLM_DMC)** 
+**[MATLAB version for the DMC task](https://github.com/latimerk/GMLM_DMC)** 

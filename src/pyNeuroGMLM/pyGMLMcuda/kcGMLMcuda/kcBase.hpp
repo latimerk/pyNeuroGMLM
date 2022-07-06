@@ -430,13 +430,11 @@ class GPUGL_base  {
         }
         bool checkDeviceComputeCapability(const bool printOnly = false) {
             cudaDeviceProp deviceProp;
-            cudaError_t ce = cudaGetDeviceProperties(&deviceProp, dev);
-            if(ce == cudaSuccess) {
-                if(610 <= deviceProp.major*100 + deviceProp.minor*10) {
-                    return true;
-                }
+            checkCudaErrors(cudaGetDeviceProperties(&deviceProp, dev), "Error getting CUDA device properties (checkDeviceComputeCapability)", printOnly);
+            if(610 <= deviceProp.major*100 + deviceProp.minor*10) {
+                return true;
             }
-            checkCudaErrors(cudaErrorInvalidDevice, "cuda compute capability error (requires 6.1 or greater)", printOnly);
+            checkCudaErrors(cudaErrorInvalidDevice, "CUDA compute capability error (requires 6.1 or greater)", printOnly);
         }
         
         

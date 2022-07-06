@@ -436,7 +436,7 @@ class GPUGL_base  {
                     return true;
                 }
             }
-            checkCudaErrors(cudaErrorInvalidDevice, "cuda compute capability error", printOnly);
+            checkCudaErrors(cudaErrorInvalidDevice, "cuda compute capability error (requires 6.1 or greater)", printOnly);
         }
         
         

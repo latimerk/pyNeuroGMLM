@@ -3,6 +3,9 @@ import scipy.optimize as spo;
 from pyNeuroGMLM import pyNeuroGMLMcuda;
 from pyNeuroGMLM.pyGMLMhelper import GMLMHelper;
 
+if(not pyNeuroGMLMcuda.gpu_available()):
+    raise RuntimeError("No GPU found!")
+
 ## This example shows how to build a GMLM and access the values, run basic optimization, etc...
 
 ## define the structure of the GMLM and data+regressors
@@ -46,6 +49,8 @@ model_structure.add_group(model_structure_grp1);
 # Making some trials now: these will be purely random, just to test if the functions can be called without any seg faults or other errors
 # Trials are divided into blocks. Each block is on a single GPU. (Multiple blocks can be given on the same GPU if you want)
 GPUs_for_blocks = [0, 0]; # the device numbers of each block
+    # detecting first GPU with sufficient compute capability (will probably be GPU 0)
+GPUs_for_blocks[0] = pyNeuroGMLMcuda.get_first_valid_gpu();
 num_blocks = len(GPUs_for_blocks);
 num_trials_per_block = 10; # NOTE: blocks can have different numbers of trials if you want
 trial_ctr = 0; # need to specify the absolute trial number (for combining blocks and such)

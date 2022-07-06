@@ -4,7 +4,11 @@
 import numpy as np;
 import pyNeuroGMLM.pyNeuroGMLMcuda.kcGLM as glm;
 from pyNeuroGMLM.pyNeuroGMLMcuda import ll_poiss_exp;
+from pyNeuroGMLM.pyNeuroGMLMcuda import gpu_available;
 import scipy.special as sp; 
+
+if(not gpu_available()):
+    raise RuntimeError("No GPU found!")
 
 X = np.asfortranarray(np.random.randn(100,5));
 Y = np.asfortranarray(np.random.poisson(1.0, size=(100))).astype('double');

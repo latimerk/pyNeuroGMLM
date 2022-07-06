@@ -1,21 +1,22 @@
 # pyNeuroGMLM
+
 Generalized multilinear model for dimensionality reduction of neural population spike trains.
 
 The core of the code is a C++/CUDA library with optimized log likelihood and derivative computations. Using the GPU code requires a CUDA capable GPU.
 CPU-only code using Numpy is also available and easier to work for with Python.
 
 Code tested using:
-CUDA 11.6
-Python 3.9.7
-pybind11 2.9.2
-cmake 3.23.1
+- CUDA 11.6
+- Python 3.9.7
+- pybind11 2.9.2
+- cmake 3.23.1
 
 There are a couple Python scripts that demonstrate the very basic setup the GMLM for GPUs and on CPU in <code>examples/</code>.
 
 # Installing with pip
 
 ```console
-pip install git+https://github.com/latimerkw/pyNeuroGMLM/
+pip install git+https://github.com/latimerk/pyNeuroGMLM/
 ```
 
 The basic library will be compiled using cmake.
@@ -27,7 +28,7 @@ Additionally, the library can be compiled without using Cuda by setting an envir
 
 ```console
 export GMLM_WITH_GPU=OFF
-pip install -v git+https://github.com/latimerkw/pyNeuroGMLM/ 
+pip install -v git+https://github.com/latimerk/pyNeuroGMLM/ 
 ```
 
 For some reason, passing in an option directly into pip caused trouble, and replacing it with an environment variable was a quick and dirty fix.
@@ -44,5 +45,7 @@ Latimer, K. W., & Freedman, D. J. (2021). Low-dimensional encoding of decisions 
 ```
 https://www.biorxiv.org/content/10.1101/2021.10.07.463576v1
 
+
+## MATLAB support
 
 **[MATLAB version for the DMC task](https://github.com/latimerk/GMLM_DMC)** 

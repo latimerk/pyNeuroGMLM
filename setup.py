@@ -9,6 +9,6 @@ setup(
     packages=['pyNeuroGMLM'],
     package_dir={'': 'src'},
     cmake_install_dir='src/pyNeuroGMLM/',
-    python_requires='>=3.7'#,
+    python_requires='>=3.9'#,
     #cmake_args=['-DWITH_GPU:BOOL=OFF', '-DWITH_DOUBLE_PRECISION:BOOL=OFF']
 )

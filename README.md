@@ -6,7 +6,7 @@ The core of the code is a C++/CUDA library with optimized log likelihood and der
 CPU-only code using Numpy is also available and easier to work for with Python.
 
 Code tested using:
-- CUDA 11.6
+- CUDA 11.6 --- Only needed if compiling with GPU code. If CUDA isn't available (or is an older version), only the CPU code will be used.
 - Python 3.9.7
 - pybind11 2.9.2
 - cmake 3.23.1

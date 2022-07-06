@@ -428,6 +428,16 @@ class GPUGL_base  {
         inline bool switchToDevice(const bool printOnly = false) {
             return checkCudaErrors(cudaSetDevice(dev), "error switching to device", printOnly);
         }
+        bool checkDeviceComputeCapability(const bool printOnly = false) {
+            cudaDeviceProp deviceProp;
+            cudaError_t ce = cudaGetDeviceProperties(&deviceProp, dev);
+            if(ce == cudaSuccess) {
+                if(610 <= deviceProp.major*100 + deviceProp.minor*10) {
+                    return true;
+                }
+            }
+            checkCudaErrors(cudaErrorInvalidDevice, "cuda compute capability error", printOnly);
+        }
         
         
     public:

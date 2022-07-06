@@ -34,6 +34,8 @@ PYBIND11_MODULE(pyNeuroGMLMcuda, m) {
         //m.def("gpuEnabled", []() { return false; });
         //m.attr("GPU_ENABLED") = py::bool_([](){ return false; });
         m.attr("GPU_ENABLED") = py::bool_(false);
+
+        
     #endif
     #ifdef USE_SINGLE_PRECISION
         //m.def("doublePrecision", []() { return true; });
@@ -44,6 +46,22 @@ PYBIND11_MODULE(pyNeuroGMLMcuda, m) {
         //m.attr("DOUBLE_PRECISION") = py::bool_([](){ return true; });
         m.attr("DOUBLE_PRECISION") = py::bool_(true);
     #endif
+
+    m.def("gpu_available", &kCUDA::gpuAvailable, R"mydelimiter(
+            Returns true if there is at least one CUDA device with sufficient compute capability.
+
+            Returns:
+              (bool): If device found AND compiled with GPU support.
+              
+        )mydelimiter");
+    m.def("get_first_valid_gpu", &kCUDA::getValidGPU, R"mydelimiter(
+            Returns the deivce number of the first CUDA device with sufficient compute capability.
+            This function will always return -1 if not compiled with GPU support.
+
+            Returns:
+              (int): If device not found, is -1.
+              
+        )mydelimiter");
 
     py::module_ m2 = m.def_submodule("kcGLM", "A submodule containing the GLM GPU code.");
 

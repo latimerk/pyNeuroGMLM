@@ -5,6 +5,13 @@ project(kcGMLMProject LANGUAGES CXX)
 option(WITH_GPU "Enable CUDA code" ON)
 option(WITH_DOUBLE_PRECISION "Use double precision for CUDA only" ON)
 
+if(DEFINED ENV{<GMLM_WITH_GPU>}
+  set(WITH_GPU ENV{<GMLM_WITH_GPU> CACHE BOOL "Enable CUDA code" FORCE)
+endif()
+if(DEFINED ENV{<GMLM_WITH_DOUBLE_PRECISION>}
+  set(WITH_DOUBLE_PRECISION ENV{<GMLM_WITH_DOUBLE_PRECISION> CACHE BOOL "Enable CUDA code" FORCE)
+endif()
+
 if(WITH_GPU)
   include(CheckLanguage)
   check_language(CUDA)

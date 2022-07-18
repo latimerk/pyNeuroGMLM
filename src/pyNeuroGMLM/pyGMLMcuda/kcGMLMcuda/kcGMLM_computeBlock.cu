@@ -25,6 +25,7 @@ GPUGMLM_computeBlock<FPTYPE>::GPUGMLM_computeBlock(const GPUGMLM_structure_args<
     this->msg = msg_;
     this->dev = block->dev_num;
     this->switchToDevice();
+    this->checkDeviceComputeCapability();
     dim_J = GMLMstructure->Groups.size();
 
     size_t dim_M = block->trials.size();

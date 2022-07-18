@@ -24,6 +24,8 @@ namespace kCUDA {
 template <class FPTYPE> class GPUGMLM_group_structure_python;
 template <class FPTYPE> class GPUGMLM_structure_python;
 
+
+
 // Tensor group coefficients for a single trial
 template <class FPTYPE>
 class GPUGMLM_trialGroup_python : public GPUGMLM_trial_Group_args<FPTYPE> {

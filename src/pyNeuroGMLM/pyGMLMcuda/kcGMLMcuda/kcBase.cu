@@ -573,7 +573,14 @@ cublasStatus_t GPUData<FPTYPE>::GEMM(GPUData<FPTYPE> * C, const GPUData<FPTYPE> 
         algo = CUBLAS_GEMM_DEFAULT;
     }
     
-    #if __CUDA_ARCH__ >= 700
+    #if __CUDA_ARCH__ >= 800
+        if(sizeof(FPTYPE) <= 4) {
+            algo = CUBLAS_GEMM_DEFAULT_TENSOR_OP; 
+        }
+        else {
+            algo = CUBLAS_GEMM_DEFAULT;
+        }
+    #elif __CUDA_ARCH__ >= 700
         if(sizeof(FPTYPE) <= 4) {
             algo = CUBLAS_GEMM_ALGO0_TENSOR_OP; 
             if((cols_op_A <= MAX_DEFAULT && rows_op_A <= MAX_DEFAULT && cols_op_B <= MAX_DEFAULT && rows_op_B <= MAX_DEFAULT) || cols_op_B > MAX_COLS_ALGO0) {

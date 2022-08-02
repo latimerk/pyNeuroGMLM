@@ -434,7 +434,10 @@ class GPUGL_base  {
             if(610 <= deviceProp.major*100 + deviceProp.minor*10) {
                 return true;
             }
-            checkCudaErrors(cudaErrorInvalidDevice, "CUDA compute capability error (requires 6.1 or greater)", printOnly);
+            else {
+                checkCudaErrors(cudaErrorInvalidDevice, "CUDA compute capability error (requires 6.1 or greater)", printOnly);
+                return false;
+            }
         }
         
         

@@ -156,7 +156,7 @@ void GPUGMLMPop_computeBlock<FPTYPE>::computeRateParts(const GPUGMLM_computeOpti
 
     //for each group
     for(unsigned int jj = 0; jj < dataset->dim_J(); jj++ ) {
-        //dataset->Groups[jj]->getGroupRate(isSparseRun,  params->Groups[jj], opts->Groups[jj], stream_Groups[jj], cublasHandle_Groups[jj]);
+        dataset->Groups[jj]->getGroupRate(isSparseRun,  params->Groups[jj], opts->Groups[jj], stream_Groups[jj], cublasHandle_Groups[jj]);
     }
 }
 
